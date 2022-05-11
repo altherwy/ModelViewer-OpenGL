@@ -1,6 +1,3 @@
-// CMPUT 411/511 Assignment 1 solution
-// Usage: ./modelviewer <mesh.obj>
-
 #ifdef __APPLE__
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -33,6 +30,7 @@ const float fogColor[4] = {1.0, 1.0, 1.0, 0.0};
 
 int main(int argc, char** argv)
 {
+	/* Draw the window */
 	glutInit(&argc, argv);
 	glutInitContextVersion(4, 2);
 	glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);
@@ -54,7 +52,7 @@ int main(int argc, char** argv)
 
 void setup(char* fileName)
 {
-	obj.readObjFile(fileName);
+	obj.readObjFile(fileName); // read the object
 	obj.normalize();
 	obj.glCreateDisplayList();
 	cam.initialize(ortho, -1.0, 1.0, -1.0, 1.0, 1.0, 100.0);
