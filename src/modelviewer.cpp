@@ -1,3 +1,7 @@
+/*
+ * This file contains the main method and
+ * the required methods to setup the program
+*/
 #ifdef __APPLE__
 #include <GL/glew.h>
 #include <GL/freeglut.h>
@@ -49,7 +53,10 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-
+/*
+ * setup the program
+ * @param filename the .obj file to read
+*/
 void setup(char* fileName)
 {
 	obj.readObjFile(fileName); // read the object
@@ -60,6 +67,9 @@ void setup(char* fileName)
 	glEnable(GL_DEPTH_TEST);
 }
 
+/*
+ * draw the scene 
+*/
 
 void drawScene(void)
 {
@@ -91,43 +101,58 @@ void drawScene(void)
 	glutSwapBuffers();
 }
 
+/*
+ * resize the window 
+ * @param w the wanted width of the window
+ * @param h the wanted height of the window 
+*/
 
 void resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 }
 
-
+/*
+ * the keys to manipulate the model
+ * @param key the keyboard key pressed
+ * @param x the mouse relative coordinate along the x axis
+ * @param y the mouse relative coordinate along the y axis
+*/
 void keyInput(unsigned char key, int x, int y)
 {
 	switch(key) 
 	{
 		case 'q': exit(0);            break; // quit
 		case 'w': obj.writeObjFile("output.obj"); break;
+		// Translate the model
 		case 'n': obj.zTransl(-0.1);  break;
 		case 'N': obj.zTransl(0.1);   break;
-		case 'p': obj.xRotate(-10.0); break;
-		case 'P': obj.xRotate(10.0);  break;
-		case 'y': obj.yRotate(-10.0); break;
-		case 'Y': obj.yRotate(10.0);  break;
-		case 'r': obj.zRotate(-10.0); break;
-		case 'R': obj.zRotate(10.0);  break;
-		case 'v': cam.type = ortho;   break; // toggle camera type
-		case 'V': cam.type = persp;   break;
 		case 'd': cam.xTransl(0.1);   break;
 		case 'D': cam.xTransl(-0.1);  break;
 		case 'c': cam.yTransl(0.1);   break;
 		case 'C': cam.yTransl(-0.1);  break;
 		case 'i': cam.zTransl(0.1);   break;
 		case 'I': cam.zTransl(-0.1);  break;
+		// Rotate the model 
+		case 'p': obj.xRotate(-10.0); break;
+		case 'P': obj.xRotate(10.0);  break;
+		case 'y': obj.yRotate(-10.0); break;
+		case 'Y': obj.yRotate(10.0);  break;
+		case 'r': obj.zRotate(-10.0); break;
+		case 'R': obj.zRotate(10.0);  break;
 		case 't': cam.xRotate(10.0);  break;
 		case 'T': cam.xRotate(-10.0); break;
 		case 'a': cam.yRotate(10.0);  break;
 		case 'A': cam.yRotate(-10.0); break;
 		case 'l': cam.zRotate(10.0);  break;
 		case 'L': cam.zRotate(-10.0); break;
-		case 'f': fog = false;        break; // toggle fog off
-		case 'F': fog = true;         break; // toggle fog on
+		// toggle camera type
+		case 'v': cam.type = ortho;   break; 
+		case 'V': cam.type = persp;   break;
+		
+		// toggle fog on and off
+		case 'f': fog = false;        break; 
+		case 'F': fog = true;         break; 
 		case 'x': // reset
 			obj.reset();
 			cam.initialize(ortho, -1.0, 1.0, -1.0, 1.0, 1.0, 100.0);
@@ -138,6 +163,12 @@ void keyInput(unsigned char key, int x, int y)
 	glutPostRedisplay();
 }
 
+/*
+ * sets the special keyboard callback for the current window
+ * @param key the keyboard key pressed
+ * @param x the mouse in window relative coordinate along the x axis when the key was pressed
+ * @param y the mouse in window relative coordinate along the y axis when the key was pressed 
+*/
 
 void specialKeyInput(int key, int x, int y)
 {
