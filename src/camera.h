@@ -1,3 +1,6 @@
+/*
+ * The header file for the camera manipulation 
+*/
 #include <cmath>
 #include <vector>
 #include <Eigen/Dense>
@@ -26,7 +29,13 @@ struct camera
 
 	// member functions
 
-	// initializer not constructor, since we also want to reset after creation
+	/*
+	 * initializer not constructor, since we also want to reset after creation
+	 * @param tp the camera's projection either Perspective and Orthographic 
+	 * @param x0, x1 the projection x coordinates
+	 * @param y0, y1 the projection y coordinates
+	 * @param z0, z1 the projection z coordinates 
+	*/ 
 	void initialize(cameraType tp,
 	       float x0, float x1, float y0, float y1, float z0, float z1)
 	{
@@ -38,8 +47,11 @@ struct camera
 		quaternion = Quaternionf::Identity();
 	}
 
+	/*
+	 * Define view volume in openGL 
+	*/
 
-	void glVolume() // define view volume in openGL
+	void glVolume() 
 	{
 		if (type == ortho)
 			glOrtho(xView[0], xView[1], yView[0], yView[1], zView[0], zView[1]);
@@ -47,38 +59,52 @@ struct camera
 			glFrustum(xView[0], xView[1], yView[0], yView[1], zView[0], zView[1]);
 	}
 
-
-	void glPosition() // place camera in specified position+orientation in openGL
+	/*
+	 * Place camera in specified position+orientation in openGL
+	*/
+	void glPosition()  
 	{
 		float w = max( (float)-1, min( (float)1, quaternion.w() ) ); // |w|<=1
 		float angle = 2*acos(w)*RAD2DEG_CAM;
 		glRotatef(angle, quaternion.x(), quaternion.y(), quaternion.z()); // orient
 		glTranslatef(transl[0], transl[1], transl[2]); // position
 	}
+	
+	/*
+	 * Dolly along camera x-axis
+	*/
 
-
-	void xTransl(float trans) // dolly along camera x-axis
+	void xTransl(float trans) 
 	{
 		Vector3f axis = quaternion.conjugate()._transformVector(Vector3f::UnitX());
 		transl += trans*axis;
 	}
 
+	/*
+	 * Crane along camera y-axis
+	*/
 
-	void yTransl(float trans) // crane along camera y-axis
+	void yTransl(float trans)  
 	{
 		Vector3f axis = quaternion.conjugate()._transformVector(Vector3f::UnitY());
 		transl += trans*axis;
 	}
 
+	/*
+	 * Zoom along camera z-axis
+	*/
 
-	void zTransl(float trans) // zoom along camera z-axis
+	void zTransl(float trans)  
 	{
 		Vector3f axis = quaternion.conjugate()._transformVector(Vector3f::UnitZ());
 		transl += trans*axis;
 	}
 
+	/*
+	 * Tilt around camera x-axis
+	*/
 
-	void xRotate(float angleDeg) // tilt around camera x-axis
+	void xRotate(float angleDeg) 
 	{
 		float angleQuat = angleDeg/2.0*DEG2RAD_CAM;
 		Vector4f newRotation;
@@ -87,7 +113,11 @@ struct camera
 	}
 
 
-	void yRotate(float angleDeg) // pan around camera y-axis
+	/*
+	 * Pan around camera y-axis
+	*/
+
+	void yRotate(float angleDeg) 
 	{
 		float angleQuat = angleDeg/2.0*DEG2RAD_CAM;
 		Vector4f newRotation;
@@ -95,8 +125,11 @@ struct camera
 		quaternion = (Quaternionf)newRotation * quaternion;
 	}
 
+	/*
+	 * Roll around camera z-axis
+	*/
 
-	void zRotate(float angleDeg) // roll around camera z-axis
+	void zRotate(float angleDeg) // 
 	{
 		float angleQuat = angleDeg/2.0*DEG2RAD_CAM;
 		Vector4f newRotation;

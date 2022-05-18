@@ -1,3 +1,6 @@
+/*
+ * The header files for the mesh models
+*/
 
 #include <iostream>
 #include <fstream>
@@ -69,6 +72,9 @@ struct mesh
 		numTriangles = 0;
 	}
 
+	/*
+	 * Reset the model
+	*/
 
 	void reset()
 	{
@@ -76,9 +82,12 @@ struct mesh
 		quaternion = Quaternionf::Identity();
 	}
 
-
+	/*
+	 * place mesh in specified position+orientation in openGL
+	 * @param initialPosition the initial position of the model 
+	*/
 	void glPosition(Vector3f initialPosition)
-	// place mesh in specified position+orientation in openGL
+	
 	{
 		glTranslatef(translation[0], translation[1], translation[2]);
 		glTranslatef(initialPosition[0], initialPosition[1], initialPosition[2]);
@@ -90,34 +99,50 @@ struct mesh
 	}
 
 
+	/*
+	 * The colour of the model
+	*/
 	void glColor()
 	{
 		glColor4fv(color);
 	}
 
+	/*
+	 * Translate along mesh x-axis
+	 * @param trans translation value
+	*/
 
-	void xTransl(float trans) // translate along mesh x-axis
+	void xTransl(float trans)
 	{
 		Vector3f axis = quaternion._transformVector(Vector3f::UnitX());
 		translation += trans*axis;
 	}
 
-
-	void yTransl(float trans) // translate along mesh y-axis
+	/*
+	 * Translate along mesh y-axis
+	 * @param trans translation value
+	*/
+	void yTransl(float trans) 
 	{
 		Vector3f axis = quaternion._transformVector(Vector3f::UnitY());
 		translation += trans*axis;
 	}
 
-
-	void zTransl(float trans) // translate along mesh z-axis
+	/*
+	 * Translate along mesh y-axis
+	 * @param trans translation value
+	*/
+	void zTransl(float trans) 
 	{
 		Vector3f axis = quaternion._transformVector(Vector3f::UnitZ());
 		translation += trans*axis;
 	}
 
-
-	void xRotate(float angleDeg) // pitch around mesh x-axis
+	/*
+	 * Pitch around mesh x-axis
+	 * @param angleDeg rotation angle
+	*/
+	void xRotate(float angleDeg) 
 	{
 		float angleQuat = angleDeg/2.0*DEG2RAD_MES;
 		Vector3f axis = quaternion._transformVector(Vector3f::UnitX());
@@ -126,8 +151,11 @@ struct mesh
 		quaternion = (Quaternionf)newRotation * quaternion;
 	}
 
-
-	void yRotate(float angleDeg) // yaw around mesh y-axis
+	/*
+	 * Yaw around mesh y-axis
+	 * @param angleDeg rotation angle
+	*/
+	void yRotate(float angleDeg)
 	{
 		float angleQuat = angleDeg/2.0*DEG2RAD_MES;
 		Vector3f axis = quaternion._transformVector(Vector3f::UnitY());
@@ -136,8 +164,11 @@ struct mesh
 		quaternion = (Quaternionf)newRotation * quaternion;
 	}
 
-
-	void zRotate(float angleDeg) // roll around mesh z-axis
+	/*
+	 * Roll around mesh z-axis
+	 * @param angleDeg rotation angle
+	*/
+	void zRotate(float angleDeg)
 	{
 		float angleQuat = angleDeg/2.0*DEG2RAD_MES;
 		Vector3f axis = quaternion._transformVector(Vector3f::UnitZ());
