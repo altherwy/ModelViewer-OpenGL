@@ -1,10 +1,15 @@
-
+/*
+ * Manipulate the mesh models
+*/
 #include "mesh.h"
 
 using namespace std;
 using namespace Eigen;
 
-
+/*
+ * Load the mesh file (.obj)
+ * @param fileName the file name of the model (.obj)
+*/
 void mesh::readObjFile(char* fileName)
 {
 	string line, token;
@@ -54,7 +59,10 @@ void mesh::readObjFile(char* fileName)
 	infile.close();
 }
 
-
+/*
+ * Outputing the vertices and faces of the model to output.obj
+ * @param fileName the file name of the model (.obj) 
+*/
 void mesh::writeObjFile(char* fileName)
 {
 	ofstream outfile(fileName);
@@ -76,7 +84,9 @@ void mesh::writeObjFile(char* fileName)
 	outfile.close();
 }
 
-
+/*
+ * Normalize the model
+*/
 void mesh::normalize()
 {
 	Vector3f totals(0, 0, 0);
@@ -95,10 +105,12 @@ void mesh::normalize()
   meshScale = 1.0/scale;
 }
 
-
+/*
+ * Create the display list 
+*/
 void mesh::glCreateDisplayList()
 {
-	displayList = glGenLists(1);
+	displayList = glGenLists(1); // generate a set of empty list
 	glNewList(displayList, GL_COMPILE);
 		for (unsigned int f = 0; f < faceVertices.size(); ++f) {
 			glBegin(GL_TRIANGLE_FAN);
@@ -111,7 +123,9 @@ void mesh::glCreateDisplayList()
 	glEndList();
 }
 
-
+/*
+ * Execute the display list
+*/
 void mesh::glCallDisplayList()
 {
 	if (displayList)
@@ -122,7 +136,9 @@ void mesh::glCallDisplayList()
 	}
 }
 
-
+/*
+ * Create the vertex array
+*/
 void mesh::createVertexArray()
 {
     numVertices = vertices.size(); numNormals = normals.size(); numTextures = textures.size();
@@ -174,7 +190,9 @@ void mesh::createVertexArray()
 	}
 }
 
-
+/*
+ * Enable the vertex array
+*/
 void mesh::glEnableVertexArray()
 {
 	if (vertexArray == NULL) {
@@ -186,7 +204,9 @@ void mesh::glEnableVertexArray()
 	}
 }
 
-
+/*
+ * Draw the vertex array
+*/
 void mesh::glDrawVertexArray()
 {
 	if (triangleIndices == NULL) {
@@ -197,7 +217,9 @@ void mesh::glDrawVertexArray()
 		               triangleIndices);
 }
 
-
+/*
+ * Enable the Vertex Buffer Object (VBO) which uploads the vertex data to the video card memory
+*/
 void mesh::glEnableVBO()
 {
     
@@ -229,13 +251,19 @@ void mesh::glEnableVBO()
 	             triangleIndices, GL_STATIC_DRAW);
 }
 
-
+/*
+ * Draw elements using the VBO
+*/
 void mesh::glDrawVBO()
 {
 	glDrawElements(GL_TRIANGLES, 3*numTriangles, GL_UNSIGNED_INT, 0);
 }
 
 
+/*
+ * Enable the Vertex Array Object (VAO) which contains one or more Vertex Buffer Objects 
+ * and is designed to store the information for a complete rendered object
+*/
 void mesh::glEnableVAO()
 {
 
@@ -249,7 +277,9 @@ void mesh::glEnableVAO()
 	mesh::glEnableVBO();
 }
 
-
+/*
+ * Draw elements using the VAO
+*/
 void mesh::glDrawVAO()
 {
 #ifdef __APPLE__
