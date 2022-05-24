@@ -124,28 +124,31 @@ void keyInput(unsigned char key, int x, int y)
 	{
 		case 'q': exit(0);            break; // quit
 		case 'w': obj.writeObjFile("output.obj"); break;
-		// Translate the model
-		case 'n': obj.zTransl(-0.1);  break;
-		case 'N': obj.zTransl(0.1);   break;
+
+		// Manipulate the camera
 		case 'd': cam.xTransl(0.1);   break;
 		case 'D': cam.xTransl(-0.1);  break;
 		case 'c': cam.yTransl(0.1);   break;
 		case 'C': cam.yTransl(-0.1);  break;
 		case 'i': cam.zTransl(0.1);   break;
 		case 'I': cam.zTransl(-0.1);  break;
-		// Rotate the model 
-		case 'p': obj.xRotate(-10.0); break;
-		case 'P': obj.xRotate(10.0);  break;
-		case 'y': obj.yRotate(-10.0); break;
-		case 'Y': obj.yRotate(10.0);  break;
-		case 'r': obj.zRotate(-10.0); break;
-		case 'R': obj.zRotate(10.0);  break;
 		case 't': cam.xRotate(10.0);  break;
 		case 'T': cam.xRotate(-10.0); break;
 		case 'a': cam.yRotate(10.0);  break;
 		case 'A': cam.yRotate(-10.0); break;
 		case 'l': cam.zRotate(10.0);  break;
 		case 'L': cam.zRotate(-10.0); break;
+		
+		// Manipulate the model
+		case 'n': obj.zTransl(-0.1);  break;
+		case 'N': obj.zTransl(0.1);   break; 
+		case 'p': obj.xRotate(-10.0); break;
+		case 'P': obj.xRotate(10.0);  break;
+		case 'y': obj.yRotate(-10.0); break;
+		case 'Y': obj.yRotate(10.0);  break;
+		case 'r': obj.zRotate(-10.0); break;
+		case 'R': obj.zRotate(10.0);  break;
+		
 		// toggle camera type
 		case 'v': cam.type = ortho;   break; 
 		case 'V': cam.type = persp;   break;
